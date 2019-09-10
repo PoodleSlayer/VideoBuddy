@@ -23,6 +23,13 @@ namespace VideoBuddy.Views
 		public SettingsPage()
 		{
 			InitializeComponent();
+
+			BackBtn.Click += BackBtn_Click;
+		}
+
+		private void BackBtn_Click(object sender, RoutedEventArgs e)
+		{
+			NavigationService.GoBack();
 		}
 	}
 }

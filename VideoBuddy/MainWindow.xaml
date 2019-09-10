@@ -6,5 +6,5 @@
         xmlns:local="clr-namespace:VideoBuddy"
         mc:Ignorable="d"
         Title="Video Buddy" Height="400" Width="800">
-	<Frame x:Name="MainFrame" />
+	<Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" />
 </Window>

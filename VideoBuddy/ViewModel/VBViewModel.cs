@@ -1,3 +1,4 @@
+﻿using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,11 +7,8 @@ using System.Threading.Tasks;
 
 namespace VideoBuddy.ViewModel
 {
-    public class MainViewModel : VBViewModel
-    {
-		public override void SetupViewModel()
-		{
-			
-		}
+	public abstract class VBViewModel : ViewModelBase
+	{
+		public abstract void SetupViewModel();
 	}
 }

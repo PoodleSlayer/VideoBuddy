@@ -23,6 +23,14 @@ namespace VideoBuddy.Views
 		public MainPage()
 		{
 			InitializeComponent();
+
+			SettingsBtn.Click += SettingsBtn_Click;
+		}
+
+		private void SettingsBtn_Click(object sender, RoutedEventArgs e)
+		{
+
+			NavigationService.Navigate(new SettingsPage());
 		}
 	}
 }
