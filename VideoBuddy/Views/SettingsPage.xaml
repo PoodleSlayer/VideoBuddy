@@ -11,14 +11,14 @@
 
 	<Grid>
 		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="200" />
 			<ColumnDefinition Width="1*" />
-			<ColumnDefinition Width="2*" />
-			<ColumnDefinition Width="1*" />
+			<ColumnDefinition Width="200" />
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
+			<RowDefinition Height="45" />
 			<RowDefinition Height="1*" />
-			<RowDefinition Height="6*" />
-			<RowDefinition Height="1*" />
+			<RowDefinition Height="45" />
 		</Grid.RowDefinitions>
 		<Button x:Name="BackBtn" 
 				Grid.Column="0"
@@ -34,16 +34,17 @@
 				   VerticalAlignment="Center"
 				   Text="Settings"
 				   FontSize="30"/>
-		<StackPanel Orientation="Vertical"
-					Grid.Column="0"
-					Grid.ColumnSpan="3"
-					Grid.Row="1" >
+		<ScrollViewer x:Name="SettingsScroll"
+					  Grid.Column="0"
+					  Grid.ColumnSpan="3"
+					  Grid.Row="1">
+			<StackPanel Orientation="Vertical">
 			<TextBlock x:Name="LocationLabel" 
 					   Text="youtube-dl Location:"
 					   FontSize="20"
 					   Margin="10, 10, 0, 0" />
 			<TextBox x:Name="LocationText"
-					 Text="Specify youtube-dl location..."
+					 Text="{Binding YtdlLocation}"
 					 FontSize="20"
 					 Height="35"
 					 Margin="10,0,10,0"/>
@@ -71,7 +72,7 @@
 					   FontSize="20"
 					   Margin="10, 10, 0, 0" />
 			<TextBox x:Name="DestinationText"
-					 Text="Specify download folder..."
+					 Text="{Binding DownloadLocation}"
 					 FontSize="20"
 					 Height="35"
 					 Margin="10,0,10,0"/>
@@ -82,20 +83,27 @@
 					Height="30"
 					HorizontalAlignment="Left"
 					Margin="10"/>
+			<Button x:Name="SaveBtn"
+					Content="Save"
+					Command="{Binding SaveCommand}"
+					Height="35"
+					Width="200"
+					VerticalAlignment="Bottom" />
 		</StackPanel>
+		</ScrollViewer>
 		<TextBlock x:Name="YtdlOutputLabel"
 				   Text="Youtube-dl output:"
 				   Grid.Column="0"
 				   Grid.ColumnSpan="3"
 				   Grid.Row="2"
-				   Margin="10,0,0,0"
-				   VerticalAlignment="Top" />
+				   Margin="10,0,0,15"
+				   VerticalAlignment="Bottom" />
 		<TextBlock x:Name="YtdlOutputBlock"
 				   Text="output from youtube-dl command line"
 				   Grid.Column="0"
 				   Grid.ColumnSpan="3"
 				   Grid.Row="2"
 				   Margin="10,0,0,0"
-				   VerticalAlignment="Center" />
+				   VerticalAlignment="Bottom" />
 	</Grid>
 </Page>

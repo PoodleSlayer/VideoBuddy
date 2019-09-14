@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Autofac;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using VideoBuddy.IoC;
 using VideoBuddy.Views;
 
 namespace VideoBuddy
@@ -25,7 +27,7 @@ namespace VideoBuddy
 		{
 			InitializeComponent();
 
-			MainFrame.Navigate(new MainPage());
+			MainFrame.Navigate(AppContainer.Container.Resolve<MainPage>());
 		}
 	}
 }

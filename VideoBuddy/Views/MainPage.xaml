@@ -11,14 +11,14 @@
 
     <Grid>
 		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="200" />
 			<ColumnDefinition Width="1*" />
-			<ColumnDefinition Width="2*" />
-			<ColumnDefinition Width="1*" />
+			<ColumnDefinition Width="200" />
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
+			<RowDefinition Height="45" />
 			<RowDefinition Height="1*" />
-			<RowDefinition Height="6*" />
-			<RowDefinition Height="1*" />
+			<RowDefinition Height="45" />
 		</Grid.RowDefinitions>
 		<TextBlock x:Name="TitleLabel"
 				   Text="VideoBuddy"
@@ -58,14 +58,14 @@
 				   Grid.Column="0"
 				   Grid.ColumnSpan="3"
 				   Grid.Row="2"
-				   Margin="10,0,0,0"
-				   VerticalAlignment="Top" />
+				   Margin="10,0,0,15"
+				   VerticalAlignment="Bottom" />
 		<TextBlock x:Name="YtdlOutputBlock"
 				   Text="output from youtube-dl command line"
 				   Grid.Column="0"
 				   Grid.ColumnSpan="3"
 				   Grid.Row="2"
 				   Margin="10,0,0,0"
-				   VerticalAlignment="Center" />
+				   VerticalAlignment="Bottom" />
 	</Grid>
 </Page>

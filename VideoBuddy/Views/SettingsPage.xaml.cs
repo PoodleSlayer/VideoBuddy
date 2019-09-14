@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Autofac;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using VideoBuddy.IoC;
+using VideoBuddy.ViewModel;
 
 namespace VideoBuddy.Views
 {
@@ -23,6 +26,7 @@ namespace VideoBuddy.Views
 		public SettingsPage()
 		{
 			InitializeComponent();
+			DataContext = AppContainer.Container.Resolve<SettingsViewModel>();
 
 			BackBtn.Click += BackBtn_Click;
 		}

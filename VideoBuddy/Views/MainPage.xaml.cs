@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Autofac;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using VideoBuddy.IoC;
+using VideoBuddy.ViewModel;
 
 namespace VideoBuddy.Views
 {
@@ -23,14 +26,14 @@ namespace VideoBuddy.Views
 		public MainPage()
 		{
 			InitializeComponent();
+			DataContext = AppContainer.Container.Resolve<MainViewModel>();
 
 			SettingsBtn.Click += SettingsBtn_Click;
 		}
 
 		private void SettingsBtn_Click(object sender, RoutedEventArgs e)
 		{
-
-			NavigationService.Navigate(new SettingsPage());
+			NavigationService.Navigate(AppContainer.Container.Resolve<SettingsPage>());
 		}
 	}
 }

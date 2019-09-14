@@ -9,6 +9,11 @@ namespace VideoBuddy.ViewModel
 {
 	public abstract class VBViewModel : ViewModelBase
 	{
+		public VBViewModel()
+		{
+			SetupViewModel();
+		}
+
 		public abstract void SetupViewModel();
 	}
 }
