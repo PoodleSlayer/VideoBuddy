@@ -40,13 +40,14 @@
 					   FontSize="20"
 					   Margin="10,0,0,0" />
 			<TextBox x:Name="URLBox"
-					 Text="URL goes here!"
+					 Text="{Binding DownloadURL}"
 					 Grid.ColumnSpan="2"
 					 FontSize="20"
 					 Height="35"
 					 Margin="10,0,10,0" />
 			<Button x:Name="DownloadBtn"
 					Content="Download!"
+					Command="{Binding DownloadCommand}"
 					FontSize="18"
 					HorizontalAlignment="Left"
 					Width="150"

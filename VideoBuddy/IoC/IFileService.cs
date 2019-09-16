@@ -10,5 +10,6 @@ namespace VideoBuddy.IoC
     public interface IFileService
     {
 		void SaveSettings(SettingsModel settings);
+		SettingsModel LoadSettings();
     }
 }
