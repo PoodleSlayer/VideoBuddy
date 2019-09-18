@@ -22,8 +22,16 @@ namespace VideoBuddy.ViewModel
 		public override void SetupViewModel()
 		{
 			SetupCommands();
-			settings = new SettingsModel();
 			fileService = AppContainer.Container.Resolve<IFileService>();
+			settings = fileService.LoadSettings();
+			if (!String.IsNullOrEmpty(settings.DownloadLocation))
+			{
+				downloadLocation = settings.DownloadLocation;
+			}
+			if (!String.IsNullOrEmpty(settings.YtdlLocation))
+			{
+				ytdlLocation = settings.YtdlLocation;
+			}
 		}
 
 		private void SetupCommands()
