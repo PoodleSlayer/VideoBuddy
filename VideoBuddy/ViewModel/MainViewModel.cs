@@ -29,6 +29,17 @@ namespace VideoBuddy.ViewModel
 		public override void SetupViewModel()
 		{
 			SetupCommands();
+
+			BothRadioValue = true;
+		}
+
+		/// <summary>
+		/// This method is called from the MainPage's Loaded event
+		/// and can be used as a corresponding life cycle event
+		/// </summary>
+		public void PageLoaded()
+		{
+			
 		}
 
 		private void SetupCommands()
@@ -75,15 +86,26 @@ namespace VideoBuddy.ViewModel
 
 			string ytdlPath = settings.YtdlLocation;
 			ytdlPath += @"\youtube-dl.exe";
-			//string ytdlPath = @"your\path\YoutubeDL\youtube-dl.exe";
 			string downloadPath = settings.DownloadLocation;
 			string newFileName = String.IsNullOrEmpty(fileName) ? @"%(title)s.%(ext)s" : fileName + @".%(ext)s";
 			downloadPath += @"\" + newFileName;
-			//string downloadPath = @"your\path\Videos\%(title)s.%(ext)s";
+			string videoFormat = "";
+			if (VideoRadioValue)
+			{
+				videoFormat = "bestvideo";
+			}
+			else if (AudioRadioValue)
+			{
+				videoFormat = "bestaudio";
+			}
+			else  // BothRadioValue
+			{
+				videoFormat = "best";
+			}
 
 			Process ytdlProcess = new Process();
 			ytdlProcess.StartInfo.FileName = ytdlPath;
-			ytdlProcess.StartInfo.Arguments = @"-f 137 -o """ + downloadPath + @""" """ + downloadURL + @"""";
+			ytdlProcess.StartInfo.Arguments = "-f " + videoFormat + " -o \"" + downloadPath + "\" \"" + downloadURL + "\"";
 			ytdlProcess.StartInfo.UseShellExecute = false;
 			ytdlProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
 			ytdlProcess.StartInfo.CreateNoWindow = true;
@@ -93,12 +115,62 @@ namespace VideoBuddy.ViewModel
 
 			ytdlProcess.Start();
 			ytdlProcess.BeginOutputReadLine();
-			//var ytdlOutput = ytdlProcess.StandardOutput.ReadToEnd();
-
-			//ytdlProcess.WaitForExit();
 
 			// example cmd line usage:
 			// youtube-dl -f 137 -o "your\download\location\%(title)s.%(ext)s" "https://www.youtube.com/watch?v=5RsOkhR6KBc"
+		}
+
+		/// <summary>
+		/// This method will run a Process instance async
+		/// </summary>
+		/// <returns>The TaskCompletionSource for the Process</returns>
+		private Task<int> RunProcessAsync()
+		{
+			var tcs = new TaskCompletionSource<int>();
+
+			string ytdlPath = settings.YtdlLocation;
+			ytdlPath += @"\youtube-dl.exe";
+			string downloadPath = settings.DownloadLocation;
+			string newFileName = String.IsNullOrEmpty(fileName) ? @"%(title)s.%(ext)s" : fileName + @".%(ext)s";
+			downloadPath += @"\" + newFileName;
+			string videoFormat = "";
+			if (VideoRadioValue)
+			{
+				videoFormat = "bestvideo";
+			}
+			else if (AudioRadioValue)
+			{
+				videoFormat = "bestaudio";
+			}
+			else  // BothRadioValue
+			{
+				videoFormat = "best";
+			}
+
+			var ytdlProcess = new Process
+			{
+				StartInfo =
+				{
+					FileName = ytdlPath,
+					Arguments = "-f " + videoFormat + " -o \"" + downloadPath + "\" \"" + downloadURL + "\"",
+					UseShellExecute = false,
+					WindowStyle = ProcessWindowStyle.Hidden,
+					CreateNoWindow = true,
+					RedirectStandardOutput = true,
+				},
+				EnableRaisingEvents = true
+			};
+
+			ytdlProcess.Exited += (sender, args) =>
+			{
+				tcs.SetResult(ytdlProcess.ExitCode);
+				ytdlProcess.Dispose();
+			};
+
+			ytdlProcess.OutputDataReceived += OutputReceived;
+			ytdlProcess.Start();
+
+			return tcs.Task;
 		}
 
 		private void OutputReceived(object sender, DataReceivedEventArgs e)
@@ -127,6 +199,8 @@ namespace VideoBuddy.ViewModel
 				YtdlOutput = e.Data + "\n" + YtdlOutput;
 			}
 		}
+
+		#region Properties
 
 		private string downloadURL;
 		public string DownloadURL
@@ -190,5 +264,49 @@ namespace VideoBuddy.ViewModel
 				}
 			}
 		}
+
+		private bool bothRadioValue;
+		public bool BothRadioValue
+		{
+			get => bothRadioValue;
+			set
+			{
+				if (value != bothRadioValue)
+				{
+					bothRadioValue = value;
+					RaisePropertyChanged("BothRadioValue");
+				}
+			}
+		}
+
+		private bool videoRadioValue;
+		public bool VideoRadioValue
+		{
+			get => videoRadioValue;
+			set
+			{
+				if (value != videoRadioValue)
+				{
+					videoRadioValue = value;
+					RaisePropertyChanged("VideoRadioValue");
+				}
+			}
+		}
+
+		private bool audioRadioValue;
+		public bool AudioRadioValue
+		{
+			get => audioRadioValue;
+			set
+			{
+				if (value != audioRadioValue)
+				{
+					audioRadioValue = value;
+					RaisePropertyChanged("AudioRadioValue");
+				}
+			}
+		}
+
+		#endregion Properties
 	}
 }

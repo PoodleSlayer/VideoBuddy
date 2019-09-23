@@ -28,12 +28,24 @@ namespace VideoBuddy.Views
 			InitializeComponent();
 			DataContext = AppContainer.Container.Resolve<MainViewModel>();
 
+			Loaded += MainPage_Loaded;
+
 			SettingsBtn.Click += SettingsBtn_Click;
+		}
+
+		private void MainPage_Loaded(object sender, RoutedEventArgs e)
+		{
+			ViewModel.PageLoaded();
 		}
 
 		private void SettingsBtn_Click(object sender, RoutedEventArgs e)
 		{
 			NavigationService.Navigate(AppContainer.Container.Resolve<SettingsPage>());
+		}
+
+		private MainViewModel ViewModel
+		{
+			get => DataContext as MainViewModel;
 		}
 	}
 }

@@ -34,6 +34,12 @@ namespace VideoBuddy.Views
 			YtdlBtn.Click += YtdlBtn_Click;
 			BackBtn.Click += BackBtn_Click;
 			VBSelectTextBox testy = new VBSelectTextBox();
+			Loaded += SettingsPage_Loaded;
+		}
+
+		private void SettingsPage_Loaded(object sender, RoutedEventArgs e)
+		{
+			ViewModel.PageLoaded();
 		}
 
 		private void YtdlBtn_Click(object sender, RoutedEventArgs e)
