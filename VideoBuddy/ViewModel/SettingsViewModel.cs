@@ -19,6 +19,7 @@ namespace VideoBuddy.ViewModel
 
 		private SettingsModel settings;
 		private IFileService fileService;
+		private bool versionChecked = false;
 
 		public override void SetupViewModel()
 		{
@@ -63,18 +64,15 @@ namespace VideoBuddy.ViewModel
 			string ytdlPath = settings.YtdlLocation;
 			ytdlPath += @"\youtube-dl.exe";
 
-			Process ytdlProcess = new Process();
-			ytdlProcess.StartInfo.FileName = ytdlPath;
-			ytdlProcess.StartInfo.Arguments = "--update";
-			ytdlProcess.StartInfo.UseShellExecute = false;
-			ytdlProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-			ytdlProcess.StartInfo.CreateNoWindow = true;
-			ytdlProcess.StartInfo.RedirectStandardOutput = true;
+			Process ytdlProcess = ProcessRunner.CreateProcess(ytdlPath, "--update");
 
 			ytdlProcess.OutputDataReceived += OutputReceived;
 
 			ytdlProcess.Start();
 			ytdlProcess.BeginOutputReadLine();
+			
+			versionChecked = false;
+			CheckYtdlVersion();
 		}
 
 		/// <summary>
@@ -82,28 +80,24 @@ namespace VideoBuddy.ViewModel
 		/// </summary>
 		private void CheckYtdlVersion()
 		{
-			// okay I have three different methods that all just run a Process now,
-			// probably need to pull this out into a helper method
+			if (versionChecked)
+			{
+				// avoid checking every time if we don't have to
+				return;
+			}
 
-			// also, to avoid spamming this every time the Settings Page is loaded,
-			// I might add a hidden Settings flag which will keep track of when the
-			// user updates their version. Then I can check that before attempting
-			// to see if their version even needs to be checked
 			string ytdlPath = settings.YtdlLocation;
 			ytdlPath += @"\youtube-dl.exe";
 
-			Process ytdlProcess = new Process();
-			ytdlProcess.StartInfo.FileName = ytdlPath;
-			ytdlProcess.StartInfo.Arguments = "--version";
-			ytdlProcess.StartInfo.UseShellExecute = false;
-			ytdlProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-			ytdlProcess.StartInfo.CreateNoWindow = true;
-			ytdlProcess.StartInfo.RedirectStandardOutput = true;
+			Process ytdlProcess = ProcessRunner.CreateProcess(ytdlPath, "--version");
 
 			ytdlProcess.OutputDataReceived += VersionOutputReceived;
 
 			ytdlProcess.Start();
 			ytdlProcess.BeginOutputReadLine();
+
+			versionChecked = true;
+			fileService.SaveSettings(settings);
 		}
 
 		/// <summary>

@@ -8,7 +8,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="400" d:DesignWidth="800"
       Title="Main Page LOL"
-	  Background="DarkGray">
+	  Background="#555555">
 
     <Grid>
 		<Grid.ColumnDefinitions>
@@ -23,6 +23,7 @@
 		</Grid.RowDefinitions>
 		<TextBlock x:Name="TitleLabel"
 				   Text="VideoBuddy"
+				   Foreground="White"
 				   Grid.Column="1"
 				   Grid.Row="0"
 				   FontSize="30"
@@ -33,15 +34,18 @@
 				FontSize="20"
 				Width="150"
 				HorizontalAlignment="Right"
+				HorizontalContentAlignment="Center"
+				VerticalContentAlignment="Center"
 				Grid.Column="2"
 				Grid.Row="0">
 			<StackPanel Orientation="Horizontal">
 				<TextBlock Text="Settings"
-						   Foreground="#E1E1E1"
+						   Foreground="White"
 						   VerticalAlignment="Center"
 						   TextAlignment="Center"
 						   Margin="0,0,10,0" />
 				<Image Source="/Resources/Images/gear_white.png"
+					   Height="35"
 					   Margin="2"/>
 			</StackPanel>
 		</Button>
@@ -50,6 +54,7 @@
 					Grid.Row="1">
 			<TextBlock x:Name="URLLabel" 
 					   Text="Enter a URL to Download:"
+					   Foreground="White"
 					   FontSize="20"
 					   Margin="10,10,0,0" />
 			<controls:VBSelectTextBox x:Name="URLBox"
@@ -60,15 +65,18 @@
 			<TextBlock x:Name="FileNameLabel"
 					   Text="Enter a filename (optional):"
 					   FontSize="20"
+					   Foreground="White"
 					   Margin="10,20,0,0" />
 			<controls:VBSelectTextBox x:Name="FileNameBox"
 									  Text="{Binding FileName}"
 									  FontSize="20"
 									  Height="35"
 									  Margin="10,0,10,0" />
-			<StackPanel Orientation="Horizontal">
+			<StackPanel Orientation="Horizontal"
+						Height="40">
 				<TextBlock x:Name="FormatLabel"
 						   Text="Format:"
+						   Foreground="White"
 					       FontSize="20"
 						   Margin="10,0,0,0"
 					       VerticalAlignment="Center" />
@@ -76,35 +84,47 @@
 							 Content="Best Video with Audio"
 							 IsChecked="{Binding BothRadioValue}"
 							 VerticalContentAlignment="Center"
-							 FontSize="15"
+							 Foreground="White"
+							 FontSize="18"
+							 Height="40"
 							 Margin="10,0,0,0"
 							 VerticalAlignment="Center" />
 				<RadioButton x:Name="BestVideoRadio"
 							 Content="Best Video (no Audio)"
 							 IsChecked="{Binding VideoRadioValue}"
 							 VerticalContentAlignment="Center"
-							 FontSize="15"
+							 Foreground="White"
+							 FontSize="18"
+							 Height="40"
 							 Margin="10,0,0,0"
 							 VerticalAlignment="Center" />
 				<RadioButton x:Name="BestAudioRadio"
 							 Content="Best Audio (no Video)"
 							 IsChecked="{Binding AudioRadioValue}"
 							 VerticalContentAlignment="Center"
-							 FontSize="15"
+							 Foreground="White"
+							 FontSize="18"
+							 Height="40"
 							 Margin="10,0,0,0"
 							 VerticalAlignment="Center" />
 			</StackPanel>
 			<Button x:Name="DownloadBtn"
 					Content="Download!"
+					Style="{StaticResource BrowseButtons}"
 					Command="{Binding DownloadCommand}"
+					BorderBrush="White"
 					FontSize="18"
-					HorizontalAlignment="Left"
-					Width="150"
+					Foreground="White"
+					HorizontalAlignment="Center"
+					HorizontalContentAlignment="Center"
+					VerticalContentAlignment="Center"
+					Width="200"
 					Height="40"
 					Margin="10" />
 		</StackPanel>
 		<TextBlock x:Name="YtdlOutputLabel"
 				   Text="Youtube-dl output:"
+				   Foreground="White"
 				   Grid.Column="0"
 				   Grid.ColumnSpan="3"
 				   Grid.Row="2"

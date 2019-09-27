@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VideoBuddy.IoC;
 using VideoBuddy.Models;
+using VideoBuddy.Utility;
 
 namespace VideoBuddy.ViewModel
 {
@@ -103,13 +104,9 @@ namespace VideoBuddy.ViewModel
 				videoFormat = "best";
 			}
 
-			Process ytdlProcess = new Process();
-			ytdlProcess.StartInfo.FileName = ytdlPath;
-			ytdlProcess.StartInfo.Arguments = "-f " + videoFormat + " -o \"" + downloadPath + "\" \"" + downloadURL + "\"";
-			ytdlProcess.StartInfo.UseShellExecute = false;
-			ytdlProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-			ytdlProcess.StartInfo.CreateNoWindow = true;
-			ytdlProcess.StartInfo.RedirectStandardOutput = true;
+			string processArguments = "-f " + videoFormat + " -o \"" + downloadPath + "\" \"" + downloadURL + "\"";
+
+			Process ytdlProcess = ProcessRunner.CreateProcess(ytdlPath, processArguments);
 
 			ytdlProcess.OutputDataReceived += OutputReceived;
 

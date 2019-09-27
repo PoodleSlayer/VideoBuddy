@@ -82,6 +82,7 @@
     <Compile Include="IoC\IFileService.cs" />
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Utility\FileService.cs" />
+    <Compile Include="Utility\ProcessRunner.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\VBViewModel.cs" />
@@ -143,11 +144,13 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Resource Include="Resources\Images\arrow-left_white.png" />
     <Resource Include="Resources\Images\folder_white.png" />
     <Resource Include="Resources\Images\gear_white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\download_white.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
