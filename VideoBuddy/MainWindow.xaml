@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VideoBuddy"
         mc:Ignorable="d"
-        Title="Video Buddy" Height="450" Width="800">
-	<Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" />
+		Background="Black"
+        Title="Video Buddy" Height="500" Width="800">
+	<!--<Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" />-->
+	<ContentControl x:Name="MainDisplay" />
 </Window>

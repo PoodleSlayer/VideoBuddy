@@ -27,7 +27,8 @@ namespace VideoBuddy
 		{
 			InitializeComponent();
 
-			MainFrame.Navigate(AppContainer.Container.Resolve<MainPage>());
+			//MainFrame.Navigate(AppContainer.Container.Resolve<MainPage>());
+			MainDisplay.Content = AppContainer.Container.Resolve<MainPage>();
 		}
 	}
 }

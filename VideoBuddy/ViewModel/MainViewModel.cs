@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VideoBuddy.IoC;
 using VideoBuddy.Models;
@@ -85,6 +86,7 @@ namespace VideoBuddy.ViewModel
 				return;
 			}
 
+			DownloadPct = 0;
 			string ytdlPath = settings.YtdlLocation;
 			ytdlPath += @"\youtube-dl.exe";
 			string downloadPath = settings.DownloadLocation;
@@ -190,10 +192,31 @@ namespace VideoBuddy.ViewModel
 				//			ScrollToEnd();
 				//		}
 				//	}
-			
+
 				//YtdlOutput += "\n" + e.Data;
 				// maybe try bottom-up logging...?
-				YtdlOutput = e.Data + "\n" + YtdlOutput;
+				if (e.Data.StartsWith("[download]"))
+				{
+					//string percentage = Regex.Match(e.Data, @"(\d+)%").Value;
+					string percentage = Regex.Match(e.Data, @"(\d+(\.\d+))%").Value;
+					percentage = percentage.Replace("%", "");
+					if (!string.IsNullOrEmpty(percentage))
+					{
+						float.TryParse(percentage, out float percent);
+						if (percent > DownloadPct)
+						{
+							DownloadPct = percent;
+						}
+					}
+					else
+					{
+						YtdlOutput = e.Data + "\n" + YtdlOutput;
+					}
+				}
+				else
+				{
+					YtdlOutput = e.Data + "\n" + YtdlOutput;
+				}
 			}
 		}
 
@@ -237,6 +260,20 @@ namespace VideoBuddy.ViewModel
 				{
 					fileName = value;
 					RaisePropertyChanged("FileName");
+				}
+			}
+		}
+
+		private float downloadPct = 0;
+		public float DownloadPct
+		{
+			get => downloadPct;
+			set
+			{
+				if (value != downloadPct)
+				{
+					downloadPct = value;
+					RaisePropertyChanged("DownloadPct");
 				}
 			}
 		}

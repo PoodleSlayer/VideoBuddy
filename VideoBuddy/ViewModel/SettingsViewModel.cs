@@ -55,7 +55,14 @@ namespace VideoBuddy.ViewModel
 			});
 			UpdateCommand = new RelayCommand(() =>
 			{
-				UpdateYtdl();
+				if (!String.IsNullOrEmpty(YtdlLocation))
+				{
+					UpdateYtdl();
+				}
+				else
+				{
+					DownloadYtdl();
+				}
 			});
 		}
 
@@ -73,6 +80,13 @@ namespace VideoBuddy.ViewModel
 			
 			versionChecked = false;
 			CheckYtdlVersion();
+		}
+
+		private void DownloadYtdl()
+		{
+			// youtube-dl download URL is https://ytdl-org.github.io/youtube-dl/download.html
+			string ytdlURL = @"https://ytdl-org.github.io/youtube-dl/download.html";
+			Process.Start(ytdlURL);
 		}
 
 		/// <summary>
@@ -168,6 +182,18 @@ namespace VideoBuddy.ViewModel
 					downloadLocation = value;
 					RaisePropertyChanged("DownloadLocation");
 				}
+			}
+		}
+		
+		public string UpdateBtnLabel
+		{
+			get
+			{
+				if (String.IsNullOrEmpty(ytdlLocation))
+				{
+					return "Download...";
+				}
+				return "Update";
 			}
 		}
 

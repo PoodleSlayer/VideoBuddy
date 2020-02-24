@@ -21,7 +21,7 @@ namespace VideoBuddy.Views
 	/// <summary>
 	/// Interaction logic for MainPage.xaml
 	/// </summary>
-	public partial class MainPage : Page
+	public partial class MainPage : UserControl
 	{
 		public MainPage()
 		{
@@ -40,7 +40,9 @@ namespace VideoBuddy.Views
 
 		private void SettingsBtn_Click(object sender, RoutedEventArgs e)
 		{
-			NavigationService.Navigate(AppContainer.Container.Resolve<SettingsPage>());
+			//NavigationService.Navigate(AppContainer.Container.Resolve<SettingsPage>());
+			MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
+			mainWindow.MainDisplay.Content = AppContainer.Container.Resolve<SettingsPage>();
 		}
 
 		private MainViewModel ViewModel
