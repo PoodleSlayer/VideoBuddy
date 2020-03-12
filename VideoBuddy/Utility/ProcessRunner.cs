@@ -63,8 +63,10 @@ namespace VideoBuddy.Utility
 					UseShellExecute = false,
 					WindowStyle = ProcessWindowStyle.Hidden,
 					CreateNoWindow = true,
+					RedirectStandardError = true,
 					RedirectStandardOutput = true,
 				},
+				EnableRaisingEvents = true,
 			};
 
 			return process;

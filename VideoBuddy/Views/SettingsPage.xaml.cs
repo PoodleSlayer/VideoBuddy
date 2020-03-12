@@ -73,6 +73,8 @@ namespace VideoBuddy.Views
 			// need to make a custom NavigationService/Stack to keep track of things now 
 			// that the app uses UserControls instead of Pages. also ideally the navigation
 			// would happen from the ViewModels c: good luck future Chris
+			ViewModel.OnBack();
+
 			MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
 			mainWindow.MainDisplay.Content = AppContainer.Container.Resolve<MainPage>();
 		}

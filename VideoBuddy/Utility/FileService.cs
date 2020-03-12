@@ -19,6 +19,7 @@ namespace VideoBuddy.Utility
 			string settingsFile = filePath + @"settings.json";
 			string jsonText = JsonConvert.SerializeObject(settings, Formatting.Indented);
 			File.WriteAllText(settingsFile, jsonText);
+			App.Settings = settings;
 		}
 
 		public SettingsModel LoadSettings()
@@ -37,6 +38,7 @@ namespace VideoBuddy.Utility
 			}
 
 			SettingsModel settings = JsonConvert.DeserializeObject<SettingsModel>(jsonText);
+			App.Settings = settings;
 			return settings;
 		}
 

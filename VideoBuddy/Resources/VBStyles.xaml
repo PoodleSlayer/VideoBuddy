@@ -48,6 +48,12 @@
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>
+
+		<Style.Triggers>
+			<Trigger Property="IsEnabled" Value="False">
+				<Setter Property="Background" Value="#708393" />
+			</Trigger>
+		</Style.Triggers>
 	</Style>
 	
 	<!-- TextBoxes -->

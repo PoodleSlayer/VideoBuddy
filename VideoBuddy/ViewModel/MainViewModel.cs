@@ -17,9 +17,13 @@ namespace VideoBuddy.ViewModel
     public class MainViewModel : VBViewModel
     {
 		public RelayCommand DownloadCommand { get; set; }
+		public RelayCommand CancelCommand { get; set; }
+		public event EventHandler SettingsWarning;
+		public event EventHandler URLWarning;
 
 		private IFileService fileHelper;
 		private SettingsModel settings;
+		private Process dlProcess;
 
 		public MainViewModel() : base()
 		{
@@ -48,20 +52,17 @@ namespace VideoBuddy.ViewModel
 		{
 			DownloadCommand = new RelayCommand(async () =>
 			{
-				YtdlOutput = "began downloading " + downloadURL + "...";
 				await DownloadAsync();
+			});
+			CancelCommand = new RelayCommand(() =>
+			{
+				CancelDownload();
 			});
 		}
 
 		private async Task DownloadAsync()
 		{
 			// OKAY how do we make this thing actually run async
-
-			if (String.IsNullOrEmpty(downloadURL))
-			{
-				return;
-			}
-
 			if (settings == null)
 			{
 				// what the heck? Settings not loaded
@@ -69,27 +70,41 @@ namespace VideoBuddy.ViewModel
 				return;
 			}
 
-			if (String.IsNullOrEmpty(settings.DownloadLocation))
+			if (String.IsNullOrEmpty(App.Settings.YtdlLocation))
+			{
+				// prompt user to specify a youtube-dl location
+				YtdlOutput = "Please specify a Youtube-dl Location in Settings!";
+				SettingsWarning?.Invoke(this, null);
+				return;
+			}
+
+			if (String.IsNullOrEmpty(App.Settings.DownloadLocation))
 			{
 				// prompt user to specify a download location
 
 				// maybe a popup that allows them to proceed and default
 				// to saving in the youtube-dl folder?
 				YtdlOutput = "Please specify a Download Location in Settings!";
+				SettingsWarning?.Invoke(this, null);
 				return;
 			}
 
-			if (String.IsNullOrEmpty(settings.YtdlLocation))
+			if (String.IsNullOrEmpty(downloadURL))
 			{
-				// prompt user to specify a youtube-dl location
-				YtdlOutput = "Please specify a Youtube-dl Location in Settings!";
+				YtdlOutput = "Please enter a URL to download!";
+				URLWarning?.Invoke(this, null);
 				return;
 			}
+
+			YtdlOutput = "began downloading " + downloadURL + "...";
 
 			DownloadPct = 0;
-			string ytdlPath = settings.YtdlLocation;
+			DlInProgress = true;
+			DlEnabled = false;
+
+			string ytdlPath = App.Settings.YtdlLocation;
 			ytdlPath += @"\youtube-dl.exe";
-			string downloadPath = settings.DownloadLocation;
+			string downloadPath = App.Settings.DownloadLocation;
 			string newFileName = String.IsNullOrEmpty(fileName) ? @"%(title)s.%(ext)s" : fileName + @".%(ext)s";
 			downloadPath += @"\" + newFileName;
 			string videoFormat = "";
@@ -108,15 +123,50 @@ namespace VideoBuddy.ViewModel
 
 			string processArguments = "-f " + videoFormat + " -o \"" + downloadPath + "\" \"" + downloadURL + "\"";
 
-			Process ytdlProcess = ProcessRunner.CreateProcess(ytdlPath, processArguments);
+			//Process ytdlProcess = ProcessRunner.CreateProcess(ytdlPath, processArguments);
+			dlProcess = ProcessRunner.CreateProcess(ytdlPath, processArguments);
 
-			ytdlProcess.OutputDataReceived += OutputReceived;
+			//ytdlProcess.OutputDataReceived += OutputReceived;
+			//ytdlProcess.Exited += YtdlProcess_Exited;
 
-			ytdlProcess.Start();
-			ytdlProcess.BeginOutputReadLine();
+			//ytdlProcess.Start();
+			//ytdlProcess.BeginOutputReadLine();
+
+			dlProcess.OutputDataReceived += OutputReceived;
+			dlProcess.ErrorDataReceived += ErrorReceived;
+			dlProcess.Exited += YtdlProcess_Exited;
+			
+			try
+			{
+				dlProcess.Start();
+				dlProcess.BeginOutputReadLine();
+				dlProcess.BeginErrorReadLine();
+			}
+			catch(Exception e)
+			{
+				YtdlOutput = e.Message;
+			}
 
 			// example cmd line usage:
 			// youtube-dl -f 137 -o "your\download\location\%(title)s.%(ext)s" "https://www.youtube.com/watch?v=5RsOkhR6KBc"
+		}
+
+		private void YtdlProcess_Exited(object sender, EventArgs e)
+		{
+			// ytdl process successfully exited
+			var senderProc = sender as Process;
+			if (senderProc.ExitCode == 0)
+			{
+				// process finished successfully!
+			}
+			else if (senderProc.ExitCode == -1)
+			{
+				// process was canceled manually
+				DownloadPct = 0;
+			}
+			dlProcess.Dispose();
+			DlInProgress = false;
+			DlEnabled = true;
 		}
 
 		/// <summary>
@@ -167,9 +217,20 @@ namespace VideoBuddy.ViewModel
 			};
 
 			ytdlProcess.OutputDataReceived += OutputReceived;
+			ytdlProcess.ErrorDataReceived += ErrorReceived;
 			ytdlProcess.Start();
 
 			return tcs.Task;
+		}
+
+		private void CancelDownload()
+		{
+			if (dlProcess != null)
+			{
+				YtdlOutput = "***Download canceled***" + "\n" + YtdlOutput;
+				dlProcess.Kill();
+				//dlProcess.Dispose();
+			}
 		}
 
 		private void OutputReceived(object sender, DataReceivedEventArgs e)
@@ -217,6 +278,14 @@ namespace VideoBuddy.ViewModel
 				{
 					YtdlOutput = e.Data + "\n" + YtdlOutput;
 				}
+			}
+		}
+
+		private void ErrorReceived(object sender, DataReceivedEventArgs e)
+		{
+			if (e.Data != null && !String.IsNullOrEmpty(e.Data))
+			{
+				YtdlOutput = e.Data + "\n" + YtdlOutput;
 			}
 		}
 
@@ -274,6 +343,34 @@ namespace VideoBuddy.ViewModel
 				{
 					downloadPct = value;
 					RaisePropertyChanged("DownloadPct");
+				}
+			}
+		}
+
+		private bool dlInProgress = false;
+		public bool DlInProgress
+		{
+			get => dlInProgress;
+			set
+			{
+				if (dlInProgress != value)
+				{
+					dlInProgress = value;
+					RaisePropertyChanged("DlInProgress");
+				}
+			}
+		}
+
+		private bool dlEnabled = true;
+		public bool DlEnabled
+		{
+			get => dlEnabled;
+			set
+			{
+				if (dlEnabled != value)
+				{
+					dlEnabled = value;
+					RaisePropertyChanged("DlEnabled");
 				}
 			}
 		}

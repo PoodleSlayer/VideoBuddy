@@ -28,11 +28,11 @@ namespace VideoBuddy.ViewModel
 			settings = fileService.LoadSettings();
 			if (!String.IsNullOrEmpty(settings.DownloadLocation))
 			{
-				downloadLocation = settings.DownloadLocation;
+				DownloadLocation = settings.DownloadLocation;
 			}
 			if (!String.IsNullOrEmpty(settings.YtdlLocation))
 			{
-				ytdlLocation = settings.YtdlLocation;
+				YtdlLocation = settings.YtdlLocation;
 			}
 		}
 
@@ -45,6 +45,12 @@ namespace VideoBuddy.ViewModel
 			CheckYtdlVersion();
 		}
 
+		public void OnBack()
+		{
+			YtdlLocation = settings.YtdlLocation;
+			DownloadLocation = settings.DownloadLocation;
+		}
+
 		private void SetupCommands()
 		{
 			SaveCommand = new RelayCommand(() =>
@@ -52,10 +58,12 @@ namespace VideoBuddy.ViewModel
 				settings.DownloadLocation = downloadLocation;
 				settings.YtdlLocation = ytdlLocation;
 				fileService.SaveSettings(settings);
+				versionChecked = false;
+				CheckYtdlVersion();
 			});
 			UpdateCommand = new RelayCommand(() =>
 			{
-				if (!String.IsNullOrEmpty(YtdlLocation))
+				if (!String.IsNullOrEmpty(ytdlLocation))
 				{
 					UpdateYtdl();
 				}
@@ -94,6 +102,11 @@ namespace VideoBuddy.ViewModel
 		/// </summary>
 		private void CheckYtdlVersion()
 		{
+			if (String.IsNullOrEmpty(ytdlLocation))
+			{
+				return;
+			}
+
 			if (versionChecked)
 			{
 				// avoid checking every time if we don't have to
@@ -106,9 +119,16 @@ namespace VideoBuddy.ViewModel
 			Process ytdlProcess = ProcessRunner.CreateProcess(ytdlPath, "--version");
 
 			ytdlProcess.OutputDataReceived += VersionOutputReceived;
-
-			ytdlProcess.Start();
-			ytdlProcess.BeginOutputReadLine();
+			
+			try
+			{
+				ytdlProcess.Start();
+				ytdlProcess.BeginOutputReadLine();
+			}
+			catch(Exception e)
+			{
+				YtdlOutput = e.Message;
+			}
 
 			versionChecked = true;
 			fileService.SaveSettings(settings);
@@ -225,7 +245,11 @@ namespace VideoBuddy.ViewModel
 			{
 				if (String.IsNullOrEmpty(ytdlVersion))
 				{
-					return "0.0";
+					if (String.IsNullOrEmpty(ytdlLocation))
+					{
+						return "not found!";
+					}
+					return "Checking...";
 				}
 				return ytdlVersion;
 			}

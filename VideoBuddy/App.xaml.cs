@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using VideoBuddy.IoC;
+using VideoBuddy.Models;
 
 namespace VideoBuddy
 {
@@ -14,6 +15,7 @@ namespace VideoBuddy
 	/// </summary>
 	public partial class App : Application
 	{
+		public static SettingsModel Settings = new SettingsModel();
 
 		public App()
 		{
