@@ -7,5 +7,96 @@
         mc:Ignorable="d"
 		Background="Black"
         Title="Video Buddy" Height="500" Width="800" MinHeight="500" MinWidth="800" >
-	<ContentControl x:Name="MainDisplay" />
+	<Grid x:Name="MainGrid">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="1*" />
+			<ColumnDefinition Width="1*" />
+			<ColumnDefinition Width="1*" />
+			<ColumnDefinition Width="1*" />
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="50" />
+			<RowDefinition Height="1*" />
+		</Grid.RowDefinitions>
+		<Button x:Name="DownloadBtn"
+				Style="{StaticResource DownloadButton}"
+				FontSize="20"
+				HorizontalAlignment="Stretch"
+				HorizontalContentAlignment="Center"
+				VerticalContentAlignment="Center"
+				Grid.Column="0"
+				Grid.Row="0">
+			<StackPanel Orientation="Horizontal">
+				<TextBlock Text="Download"
+						   Foreground="White"
+						   VerticalAlignment="Center"
+						   TextAlignment="Center"
+						   Margin="0,0,10,0" />
+				<Image Source="/Resources/Images/download_white.png"
+					   Height="30"
+					   Margin="2"/>
+			</StackPanel>
+		</Button>
+		<Button x:Name="RecordBtn"
+				Style="{StaticResource RecordButton}"
+				FontSize="20"
+				HorizontalAlignment="Stretch"
+				HorizontalContentAlignment="Center"
+				VerticalContentAlignment="Center"
+				Grid.Column="1"
+				Grid.Row="0">
+			<StackPanel Orientation="Horizontal">
+				<TextBlock Text="Record"
+						   Foreground="White"
+						   VerticalAlignment="Center"
+						   TextAlignment="Center"
+						   Margin="0,0,10,0" />
+				<Image Source="/Resources/Images/record_white.png"
+					   Height="20"
+					   Margin="2"/>
+			</StackPanel>
+		</Button>
+		<Button x:Name="ConvertBtn"
+				Style="{StaticResource ConvertButton}"
+				FontSize="20"
+				HorizontalAlignment="Stretch"
+				HorizontalContentAlignment="Center"
+				VerticalContentAlignment="Center"
+				Grid.Column="2"
+				Grid.Row="0">
+			<StackPanel Orientation="Horizontal">
+				<TextBlock Text="Convert"
+						   Foreground="White"
+						   VerticalAlignment="Center"
+						   TextAlignment="Center"
+						   Margin="0,0,10,0" />
+				<Image Source="/Resources/Images/convert_white.png"
+					   Height="20"
+					   Margin="2"/>
+			</StackPanel>
+		</Button>
+		<Button x:Name="SettingsBtn"
+				Style="{StaticResource NavButtons}"
+				FontSize="20"
+				HorizontalAlignment="Stretch"
+				HorizontalContentAlignment="Center"
+				VerticalContentAlignment="Center"
+				Grid.Column="3"
+				Grid.Row="0">
+			<StackPanel Orientation="Horizontal">
+				<TextBlock Text="Settings"
+						   Foreground="White"
+						   VerticalAlignment="Center"
+						   TextAlignment="Center"
+						   Margin="0,0,10,0" />
+				<Image Source="/Resources/Images/gear_white.png"
+					   Height="35"
+					   Margin="2"/>
+			</StackPanel>
+		</Button>
+		<ContentControl x:Name="MainDisplay"
+						Grid.Column="0"
+						Grid.ColumnSpan="4"
+						Grid.Row="1"/>
+	</Grid>
 </Window>

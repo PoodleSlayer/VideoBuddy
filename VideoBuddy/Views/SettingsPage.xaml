@@ -20,33 +20,12 @@
 			<RowDefinition Height="1*" />
 			<RowDefinition Height="75" />
 		</Grid.RowDefinitions>
-		<Button x:Name="BackBtn" 
-				Style="{StaticResource NavButtons}"
-				Width="150"
-				Grid.Column="0"
-				Grid.Row="0"
-				HorizontalAlignment="Left"
-				HorizontalContentAlignment="Center"
-				VerticalContentAlignment="Center"
-				VerticalAlignment="Stretch"
-				FontSize="20">
-			<StackPanel Orientation="Horizontal"
-						HorizontalAlignment="Left">
-				<Image Source="/Resources/Images/arrow-left_white.png"
-					   Height="30" />
-				<TextBlock Text="Back"
-						   Foreground="White"
-						   VerticalAlignment="Center"
-						   TextAlignment="Center"
-						   Margin="10,0,0,0" />
-			</StackPanel>
-		</Button>
 		<TextBlock x:Name="TitleLabel"
+				   Text="VideoBuddy Settings"
 				   Grid.Column="1"
 				   Grid.Row="0"
 				   HorizontalAlignment="Center"
 				   VerticalAlignment="Center"
-				   Text="Settings"
 				   Foreground="White"
 				   FontSize="30"/>
 		<ScrollViewer x:Name="SettingsScroll"
@@ -56,35 +35,41 @@
 					  Grid.Row="1">
 			<StackPanel Orientation="Vertical"
 						Width="800" >
+				
+				<!-- youtube-dl location -->
+				
 				<TextBlock x:Name="LocationLabel" 
 						   Text="youtube-dl Location:"
 						   FontSize="20"
 						   Foreground="White"
-						   Margin="10, 10, 0, 0" />
-				<controls:VBSelectTextBox x:Name="LocationText"
-					 Text="{Binding YtdlLocation}"
-					 FontSize="20"
-					 Height="35"
-					 Margin="10,0,40,0"/>
-				<Button x:Name="YtdlBtn"
-						Style="{StaticResource BrowseButtons}"
-						FontSize="16"
-						Width="120"
-						Height="30"
-						BorderBrush="White"
-						HorizontalAlignment="Left"
-						HorizontalContentAlignment="Center"
-						VerticalContentAlignment="Center"
-						Margin="10">
-					<StackPanel Orientation="Horizontal">
-						<Image Source="/Resources/Images/folder_white.png"
-							   Height="20"
-							   Margin="0,0,10,0" />
-						<TextBlock Text="Browse..."
-								   Foreground="White"
-								   VerticalAlignment="Center" />
-					</StackPanel>
-				</Button>
+						   Margin="10, 0, 0, 0" />
+				<StackPanel Orientation="Horizontal">
+					<controls:VBSelectTextBox x:Name="LocationText"
+											  Text="{Binding YtdlLocation}"
+											  FontSize="20"
+											  Height="35"
+											  Width="600"
+											  Margin="10,0,10,5"/>
+					<Button x:Name="YtdlBtn"
+							Style="{StaticResource BrowseButtons}"
+							FontSize="16"
+							Width="120"
+							Height="30"
+							BorderBrush="White"
+							HorizontalAlignment="Left"
+							HorizontalContentAlignment="Center"
+							VerticalContentAlignment="Center"
+							Margin="10,0,10,0">
+						<StackPanel Orientation="Horizontal">
+							<Image Source="/Resources/Images/folder_white.png"
+								   Height="20"
+								   Margin="0,0,10,0" />
+							<TextBlock Text="Browse..."
+									   Foreground="White"
+									   VerticalAlignment="Center" />
+						</StackPanel>
+					</Button>
+				</StackPanel>
 				<StackPanel x:Name="YtdlStack"
 							Height="30"
 							Orientation="Horizontal">
@@ -119,37 +104,78 @@
 						</StackPanel>
 					</Button>
 				</StackPanel>
+				
+				<!-- ffmpeg location -->
+
+				<TextBlock x:Name="FfmpegLabel" 
+						   Text="ffmpeg Location:"
+						   FontSize="20"
+						   Foreground="White"
+						   Margin="10, 0, 0, 0" />
+				<StackPanel Orientation="Horizontal">
+					<controls:VBSelectTextBox x:Name="FfmpegText"
+											  Text="{Binding FfmpegLocation}"
+											  FontSize="20"
+											  Height="35"
+											  Width="600"
+											  Margin="10,0,10,0"/>
+					<Button x:Name="FfmpegBtn"
+							Style="{StaticResource BrowseButtons}"
+							FontSize="16"
+							Width="120"
+							Height="30"
+							BorderBrush="White"
+							HorizontalAlignment="Left"
+							HorizontalContentAlignment="Center"
+							VerticalContentAlignment="Center"
+							Margin="10">
+						<StackPanel Orientation="Horizontal">
+							<Image Source="/Resources/Images/folder_white.png"
+								   Height="20"
+								   Margin="0,0,10,0" />
+							<TextBlock Text="Browse..."
+									   Foreground="White"
+									   VerticalAlignment="Center" />
+						</StackPanel>
+					</Button>
+				</StackPanel>
+
+				<!-- download location -->
+				
 				<TextBlock x:Name="DestinationLabel" 
 						   Text="Download Location:"
 						   Foreground="White"
 						   FontSize="20"
-						   Margin="10, 10, 0, 0" />
-				<controls:VBSelectTextBox x:Name="DestinationText"
-										  Text="{Binding DownloadLocation}"
-										  FontSize="20"
-										  Height="35"
-										  Width="700"
-										  Margin="10,0,0,0"
-										  HorizontalAlignment="Left" />
-				<Button x:Name="DestinationBtn"
-						Style="{StaticResource BrowseButtons}"
-						FontSize="16"
-						Width="120"
-						Height="30"
-						BorderBrush="White"
-						HorizontalAlignment="Left"
-						HorizontalContentAlignment="Center"
-						VerticalContentAlignment="Center"
-						Margin="10">
-					<StackPanel Orientation="Horizontal">
-						<Image Source="/Resources/Images/folder_white.png"
-							   Height="20"
-							   Margin="0,0,10,0" />
-						<TextBlock Text="Browse..."
-								   Foreground="White"
-								   VerticalAlignment="Center" />
-					</StackPanel>
-				</Button>
+						   Margin="10, 0, 0, 0" />
+				<StackPanel Orientation="Horizontal"
+							Margin="0,0,0,0">
+					<controls:VBSelectTextBox x:Name="DestinationText"
+											  Text="{Binding DownloadLocation}"
+											  FontSize="20"
+											  Height="35"
+											  Width="600"
+											  Margin="10,0,10,0"
+											  HorizontalAlignment="Left" />
+					<Button x:Name="DestinationBtn"
+							Style="{StaticResource BrowseButtons}"
+							FontSize="16"
+							Width="120"
+							Height="30"
+							BorderBrush="White"
+							HorizontalAlignment="Left"
+							HorizontalContentAlignment="Center"
+							VerticalContentAlignment="Center"
+							Margin="10">
+						<StackPanel Orientation="Horizontal">
+							<Image Source="/Resources/Images/folder_white.png"
+								   Height="20"
+								   Margin="0,0,10,0" />
+							<TextBlock Text="Browse..."
+									   Foreground="White"
+									   VerticalAlignment="Center" />
+						</StackPanel>
+					</Button>
+				</StackPanel>
 				<Button x:Name="SaveBtn"
 						Content="Save"
 						Style="{StaticResource BrowseButtons}"

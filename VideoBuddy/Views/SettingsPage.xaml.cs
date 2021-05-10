@@ -32,7 +32,7 @@ namespace VideoBuddy.Views
 
 			DestinationBtn.Click += DestinationBtn_Click;
 			YtdlBtn.Click += YtdlBtn_Click;
-			BackBtn.Click += BackBtn_Click;
+			//BackBtn.Click += BackBtn_Click;
 			VBSelectTextBox testy = new VBSelectTextBox();
 			Loaded += SettingsPage_Loaded;
 		}
@@ -76,8 +76,10 @@ namespace VideoBuddy.Views
 			ViewModel.OnBack();
 
 			MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
-			mainWindow.MainDisplay.Content = AppContainer.Container.Resolve<MainPage>();
+			mainWindow.MainDisplay.Content = AppContainer.Container.Resolve<DownloadPage>();
 		}
+
+		
 
 		private SettingsViewModel ViewModel
 		{

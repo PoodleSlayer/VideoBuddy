@@ -22,36 +22,36 @@ namespace VideoBuddy.Views
 	/// <summary>
 	/// Interaction logic for MainPage.xaml
 	/// </summary>
-	public partial class MainPage : UserControl
+	public partial class DownloadPage : UserControl
 	{
-		public MainPage()
+		public DownloadPage()
 		{
 			InitializeComponent();
-			DataContext = AppContainer.Container.Resolve<MainViewModel>();
+			DataContext = AppContainer.Container.Resolve<DownloadViewModel>();
 
-			Loaded += MainPage_Loaded;
-			
-			SettingsBtn.Click += SettingsBtn_Click;
+			Loaded += DownloadPage_Loaded;
+			Unloaded += DownloadPage_Unloaded;
 
 			ViewModel.SettingsWarning += ViewModel_SettingsWarning;
 			ViewModel.URLWarning += ViewModel_URLWarning;
 		}
 
+		// move this to MainWindow and use messaging
 		private void ViewModel_SettingsWarning(object sender, EventArgs e)
 		{
-			// highlight the URL field so the user knows what to fill out
+			// highlight the Settings button so the user knows what to fill out
 			ColorAnimation animation;
 			animation = new ColorAnimation();
 			animation.From = Colors.Green;
 			animation.To = (Color)ColorConverter.ConvertFromString("#239CFF");
 			animation.Duration = new Duration(TimeSpan.FromSeconds(1));
-			SettingsBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#239CFF"));
-			SettingsBtn.Background.BeginAnimation(SolidColorBrush.ColorProperty, animation);
+			//SettingsBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#239CFF"));
+			//SettingsBtn.Background.BeginAnimation(SolidColorBrush.ColorProperty, animation);
 		}
 
 		private void ViewModel_URLWarning(object sender, EventArgs e)
 		{
-			// highlight the Settings button so the user knows what to click
+			// highlight the URL field so the user knows what to click
 			ColorAnimation animation;
 			animation = new ColorAnimation();
 			animation.From = Colors.Green;
@@ -61,20 +61,27 @@ namespace VideoBuddy.Views
 			URLBox.Background.BeginAnimation(SolidColorBrush.ColorProperty, animation);
 		}
 
-		private void MainPage_Loaded(object sender, RoutedEventArgs e)
+		// called first time the page is created
+		protected override void OnInitialized(EventArgs e)
+		{
+			base.OnInitialized(e);
+		}
+
+		// called each time we navigate to this page
+		private void DownloadPage_Loaded(object sender, RoutedEventArgs e)
 		{
 			ViewModel.PageLoaded();
 		}
 
-		private void SettingsBtn_Click(object sender, RoutedEventArgs e)
+		// called each time we leave this page
+		private void DownloadPage_Unloaded(object sender, RoutedEventArgs e)
 		{
-			MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
-			mainWindow.MainDisplay.Content = AppContainer.Container.Resolve<SettingsPage>();
+			// do some stuff
 		}
 
-		private MainViewModel ViewModel
+		private DownloadViewModel ViewModel
 		{
-			get => DataContext as MainViewModel;
+			get => DataContext as DownloadViewModel;
 		}
 	}
 }

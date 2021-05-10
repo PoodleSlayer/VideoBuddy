@@ -14,7 +14,7 @@ using VideoBuddy.Utility;
 
 namespace VideoBuddy.ViewModel
 {
-    public class MainViewModel : VBViewModel
+    public class DownloadViewModel : VBViewModel
     {
 		public RelayCommand DownloadCommand { get; set; }
 		public RelayCommand CancelCommand { get; set; }
@@ -25,7 +25,7 @@ namespace VideoBuddy.ViewModel
 		private SettingsModel settings;
 		private Process dlProcess;
 
-		public MainViewModel() : base()
+		public DownloadViewModel() : base()
 		{
 			// load settings...?
 			fileHelper = AppContainer.Container.Resolve<IFileService>();

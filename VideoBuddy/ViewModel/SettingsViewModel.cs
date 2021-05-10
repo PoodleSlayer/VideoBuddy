@@ -161,7 +161,7 @@ namespace VideoBuddy.ViewModel
 			}
 		}
 
-		#region Properties
+		// properties
 
 		private string ytdlLocation;
 		public string YtdlLocation
@@ -201,6 +201,27 @@ namespace VideoBuddy.ViewModel
 				{
 					downloadLocation = value;
 					RaisePropertyChanged("DownloadLocation");
+				}
+			}
+		}
+
+		private string ffmpegLocation;
+		public string FfmpegLocation
+		{
+			get
+			{
+				if (String.IsNullOrEmpty(ffmpegLocation))
+				{
+					return "Specify the location of ffmpeg...";
+				}
+				return ffmpegLocation;
+			}
+			set
+			{
+				if (value != ffmpegLocation)
+				{
+					ffmpegLocation = value;
+					RaisePropertyChanged("FfmpegLocation");
 				}
 			}
 		}
@@ -263,6 +284,5 @@ namespace VideoBuddy.ViewModel
 			}
 		}
 
-		#endregion Properties
 	}
 }

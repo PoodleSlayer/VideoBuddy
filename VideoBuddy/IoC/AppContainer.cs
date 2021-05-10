@@ -47,11 +47,13 @@ namespace VideoBuddy.IoC
 		private static void RegisterDependencies(ContainerBuilder cb)
 		{
 			// Views
-			cb.RegisterType<MainPage>().SingleInstance();
+			cb.RegisterType<DownloadPage>().SingleInstance();
+			cb.RegisterType<RecordPage>().SingleInstance();
+			cb.RegisterType<ConvertPage>().SingleInstance();
 			cb.RegisterType<SettingsPage>().SingleInstance();
 
 			// ViewModels
-			cb.RegisterType<MainViewModel>().SingleInstance();
+			cb.RegisterType<DownloadViewModel>().SingleInstance();
 			cb.RegisterType<SettingsViewModel>().SingleInstance();
 
 			// Utility/Services
