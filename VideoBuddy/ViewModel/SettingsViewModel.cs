@@ -30,6 +30,10 @@ namespace VideoBuddy.ViewModel
 			{
 				DownloadLocation = settings.DownloadLocation;
 			}
+			if (!String.IsNullOrEmpty(settings.FfmpegLocation))
+			{
+				FfmpegLocation = settings.FfmpegLocation;
+			}
 			if (!String.IsNullOrEmpty(settings.YtdlLocation))
 			{
 				YtdlLocation = settings.YtdlLocation;
@@ -57,6 +61,7 @@ namespace VideoBuddy.ViewModel
 			{
 				settings.DownloadLocation = downloadLocation;
 				settings.YtdlLocation = ytdlLocation;
+				settings.FfmpegLocation = ffmpegLocation;
 				fileService.SaveSettings(settings);
 				versionChecked = false;
 				CheckYtdlVersion();

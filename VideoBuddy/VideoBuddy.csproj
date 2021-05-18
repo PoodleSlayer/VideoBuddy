@@ -86,6 +86,7 @@
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Utility\FileService.cs" />
     <Compile Include="Utility\ProcessRunner.cs" />
+    <Compile Include="ViewModel\ConvertViewModel.cs" />
     <Compile Include="ViewModel\DownloadViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\VBViewModel.cs" />

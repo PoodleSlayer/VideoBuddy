@@ -32,6 +32,7 @@ namespace VideoBuddy.Views
 
 			DestinationBtn.Click += DestinationBtn_Click;
 			YtdlBtn.Click += YtdlBtn_Click;
+			FfmpegBtn.Click += FfmpegBtn_Click;
 			//BackBtn.Click += BackBtn_Click;
 			VBSelectTextBox testy = new VBSelectTextBox();
 			Loaded += SettingsPage_Loaded;
@@ -51,6 +52,18 @@ namespace VideoBuddy.Views
 				if (result == WinForms.DialogResult.OK && !String.IsNullOrWhiteSpace(folderBrowser.SelectedPath))
 				{
 					ViewModel.YtdlLocation = folderBrowser.SelectedPath;
+				}
+			}
+		}
+
+		private void FfmpegBtn_Click(object sender, RoutedEventArgs e)
+		{
+			using (var folderBrowser = new WinForms.FolderBrowserDialog())
+			{
+				WinForms.DialogResult result = folderBrowser.ShowDialog();
+				if (result == WinForms.DialogResult.OK && !String.IsNullOrWhiteSpace(folderBrowser.SelectedPath))
+				{
+					ViewModel.FfmpegLocation = folderBrowser.SelectedPath;
 				}
 			}
 		}

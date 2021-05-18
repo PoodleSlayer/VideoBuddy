@@ -1,5 +1,3 @@
-using Autofac;
-using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,6 +9,8 @@ using System.Threading.Tasks;
 using VideoBuddy.IoC;
 using VideoBuddy.Models;
 using VideoBuddy.Utility;
+using Autofac;
+using GalaSoft.MvvmLight.Command;
 
 namespace VideoBuddy.ViewModel
 {
@@ -289,7 +289,7 @@ namespace VideoBuddy.ViewModel
 			}
 		}
 
-		#region Properties
+		// Properties
 
 		private string downloadURL;
 		public string DownloadURL
@@ -438,6 +438,5 @@ namespace VideoBuddy.ViewModel
 			}
 		}
 
-		#endregion Properties
 	}
 }

@@ -1,5 +1,4 @@
-﻿using Autofac;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +15,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using VideoBuddy.IoC;
 using VideoBuddy.Views;
+using Autofac;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace VideoBuddy
 {
@@ -41,6 +42,15 @@ namespace VideoBuddy
 			RecordBtn.Click += RecordBtn_Click;
 			ConvertBtn.Click += ConvertBtn_Click;
 			SettingsBtn.Click += SettingsBtn_Click;
+
+			Closing += MainWindow_Closing;
+
+			Messenger.Default.Register<NotificationMessage>(this, ReceiveMessage);
+		}
+
+		private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			Messenger.Default.Unregister<NotificationMessage>(this, ReceiveMessage);
 		}
 
 		private void SettingsBtn_Click(object sender, RoutedEventArgs e)
@@ -83,9 +93,16 @@ namespace VideoBuddy
 			SettingsBtn.Background.BeginAnimation(SolidColorBrush.ColorProperty, animation);
 		}
 
+		private async void ReceiveMessage(NotificationMessage msg)
+		{
+
+		}
+
 		public void NavigateTo(string newPage)
 		{
 
 		}
+
+		
 	}
 }

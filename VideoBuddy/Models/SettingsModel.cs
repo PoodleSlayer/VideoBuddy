@@ -11,6 +11,7 @@ namespace VideoBuddy.Models
     public class SettingsModel
     {
 		public string YtdlLocation { get; set; }
+        public string FfmpegLocation { get; set; }
 		public string DownloadLocation { get; set; }
     }
 }

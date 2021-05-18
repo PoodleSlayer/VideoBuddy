@@ -54,6 +54,7 @@ namespace VideoBuddy.IoC
 
 			// ViewModels
 			cb.RegisterType<DownloadViewModel>().SingleInstance();
+			cb.RegisterType<ConvertViewModel>().SingleInstance();
 			cb.RegisterType<SettingsViewModel>().SingleInstance();
 
 			// Utility/Services
