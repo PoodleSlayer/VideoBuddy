@@ -8,9 +8,12 @@ using System.Threading.Tasks;
 using VideoBuddy.IoC;
 using VideoBuddy.Models;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using Autofac;
 using VideoBuddy.Utility;
+using VideoBuddy.Utility.Messages;
 using System.Text.RegularExpressions;
+using System.Collections.ObjectModel;
 
 namespace VideoBuddy.ViewModel
 {
@@ -18,6 +21,9 @@ namespace VideoBuddy.ViewModel
 	{
 		public RelayCommand ConvertCommand { get; set; }
 		public RelayCommand CancelCommand { get; set; }
+		public RelayCommand AddToQueueCommand { get; set; }
+		public RelayCommand StartQueueCommand { get; set; }
+		public RelayCommand StopQueueCommand { get; set; }
 
 		private IFileService fileHelper;
 		private SettingsModel settings;
@@ -39,6 +45,8 @@ namespace VideoBuddy.ViewModel
 		public override void SetupViewModel()
 		{
 			SetupCommands();
+			ConvertQueue = new ObservableCollection<ConvertModel>();
+			//GenerateTestData();
 		}
 
 		private void SetupCommands()
@@ -51,10 +59,35 @@ namespace VideoBuddy.ViewModel
 			{
 
 			});
+			AddToQueueCommand = new RelayCommand(AddToQueue);
+			StartQueueCommand = new RelayCommand(StartQueue);
+			StopQueueCommand = new RelayCommand(StopQueue);
+		}
+
+		private void GenerateTestData()
+		{
+			ConvertQueue.Add(new ConvertModel()
+			{
+				FileName = "Cool Vid 1.flv"
+			});
+			ConvertQueue.Add(new ConvertModel()
+			{
+				FileName = "Cool Vid 2.flv"
+			});
+			ConvertQueue.Add(new ConvertModel()
+			{
+				FileName = "Funny Vid 1.flv"
+			});
 		}
 
 		private async Task ConvertAsync()
 		{
+			if (!String.IsNullOrEmpty(settings.FfmpegLocation))
+			{
+				NotifySettingsError();
+				return;
+			}
+
 			string destinationPath = Path.ChangeExtension(ConvertPath, ".mp4");
 
 			if (File.Exists(destinationPath))
@@ -165,6 +198,30 @@ namespace VideoBuddy.ViewModel
 			//outputSize = 0;
 		}
 
+		private void AddToQueue()
+		{
+			if (String.IsNullOrEmpty(NewQueueItem) || !File.Exists(NewQueueItem))
+			{
+				return;
+			}
+			ConvertQueue.Add(new ConvertModel()
+			{
+				FileName = Path.GetFileName(NewQueueItem),
+				FilePath = NewQueueItem,
+				DestName = Path.ChangeExtension(NewQueueItem, ".mp4")
+			});
+		}
+
+		private void StartQueue()
+		{
+			QueueBusy = true;
+		}
+
+		private void StopQueue()
+		{
+			QueueBusy = false;
+		}
+
 		// Properties
 
 		private string convertPath;
@@ -173,8 +230,7 @@ namespace VideoBuddy.ViewModel
 			get => convertPath;
 			set
 			{
-				convertPath = value;
-				RaisePropertyChanged("ConvertPath");
+				Set(ref convertPath, value);
 			}
 		}
 
@@ -186,8 +242,7 @@ namespace VideoBuddy.ViewModel
 			{
 				if (convertEnabled != value)
 				{
-					convertEnabled = value;
-					RaisePropertyChanged("ConvertEnabled");
+					Set(ref convertEnabled, value);
 				}
 			}
 		}
@@ -198,8 +253,7 @@ namespace VideoBuddy.ViewModel
 			get => convertPct;
 			set
 			{
-				convertPct = value;
-				RaisePropertyChanged("ConvertPct");
+				Set(ref convertPct, value);
 			}
 		}
 
@@ -211,8 +265,7 @@ namespace VideoBuddy.ViewModel
 			{
 				if (convertInProgress != value)
 				{
-					convertInProgress = value;
-					RaisePropertyChanged("ConvertInProgress");
+					Set(ref convertInProgress, value);
 				}
 			}
 		}
@@ -223,8 +276,7 @@ namespace VideoBuddy.ViewModel
 			get => debugConverted;
 			set
 			{
-				debugConverted = value;
-				RaisePropertyChanged("DebugConverted");
+				Set(ref debugConverted, value);
 			}
 		}
 
@@ -234,8 +286,7 @@ namespace VideoBuddy.ViewModel
 			get => debugSize;
 			set
 			{
-				debugSize = value;
-				RaisePropertyChanged("DebugSize");
+				Set(ref debugSize, value);
 			}
 		}
 
@@ -245,8 +296,47 @@ namespace VideoBuddy.ViewModel
 			get => debugPct;
 			set
 			{
-				debugPct = value;
-				RaisePropertyChanged("DebugPct");
+				Set(ref debugPct, value);
+			}
+		}
+
+		private ObservableCollection<ConvertModel> convertQueue;
+		public ObservableCollection<ConvertModel> ConvertQueue
+		{
+			get => convertQueue;
+			set
+			{
+				Set(ref convertQueue, value);
+			}
+		}
+
+		private string newQueueItem;
+		public string NewQueueItem
+		{
+			get => newQueueItem;
+			set
+			{
+				Set(ref newQueueItem, value);
+			}
+		}
+
+		private bool queueBusy = false;
+		public bool QueueBusy
+		{
+			get => queueBusy;
+			set
+			{
+				Set(ref queueBusy, value);
+			}
+		}
+
+		private float queuePct;
+		public float QueuePct
+		{
+			get => queuePct;
+			set
+			{
+				Set(ref queuePct, value);
 			}
 		}
 

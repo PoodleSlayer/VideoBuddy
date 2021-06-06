@@ -31,6 +31,9 @@ namespace VideoBuddy.Views
 
 			PathBox.PreviewDragOver += PathBox_PreviewDragOver;
 			PathBox.Drop += PathBox_Drop;
+
+			QueueTextBox.PreviewDragOver += QueueTextBox_PreviewDragOver;
+			QueueTextBox.Drop += QueueTextBox_Drop;
 		}
 
 		private void PathBox_PreviewDragOver(object sender, DragEventArgs e)
@@ -50,6 +53,23 @@ namespace VideoBuddy.Views
 				{
 					//((VBSelectTextBox)sender).Text = files[0];
 					ViewModel.ConvertPath = files[0];
+				}
+			}
+		}
+
+		private void QueueTextBox_PreviewDragOver(object sender, DragEventArgs e)
+		{
+			e.Handled = true;
+		}
+
+		private void QueueTextBox_Drop(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+			{
+				string[] files = e.Data.GetData(DataFormats.FileDrop) as string[];
+				if (files != null && files.Length > 0)
+				{
+					ViewModel.NewQueueItem = files[0];
 				}
 			}
 		}

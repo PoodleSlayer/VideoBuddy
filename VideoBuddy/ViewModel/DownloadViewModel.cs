@@ -11,6 +11,8 @@ using VideoBuddy.Models;
 using VideoBuddy.Utility;
 using Autofac;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
+using VideoBuddy.Utility.Messages;
 
 namespace VideoBuddy.ViewModel
 {
@@ -74,7 +76,7 @@ namespace VideoBuddy.ViewModel
 			{
 				// prompt user to specify a youtube-dl location
 				YtdlOutput = "Please specify a Youtube-dl Location in Settings!";
-				SettingsWarning?.Invoke(this, null);
+				NotifySettingsError();
 				return;
 			}
 
@@ -85,7 +87,7 @@ namespace VideoBuddy.ViewModel
 				// maybe a popup that allows them to proceed and default
 				// to saving in the youtube-dl folder?
 				YtdlOutput = "Please specify a Download Location in Settings!";
-				SettingsWarning?.Invoke(this, null);
+				NotifySettingsError();
 				return;
 			}
 

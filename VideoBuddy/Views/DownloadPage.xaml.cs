@@ -32,21 +32,7 @@ namespace VideoBuddy.Views
 			Loaded += DownloadPage_Loaded;
 			Unloaded += DownloadPage_Unloaded;
 
-			ViewModel.SettingsWarning += ViewModel_SettingsWarning;
 			ViewModel.URLWarning += ViewModel_URLWarning;
-		}
-
-		// move this to MainWindow and use messaging
-		private void ViewModel_SettingsWarning(object sender, EventArgs e)
-		{
-			// highlight the Settings button so the user knows what to fill out
-			ColorAnimation animation;
-			animation = new ColorAnimation();
-			animation.From = Colors.Green;
-			animation.To = (Color)ColorConverter.ConvertFromString("#239CFF");
-			animation.Duration = new Duration(TimeSpan.FromSeconds(1));
-			//SettingsBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#239CFF"));
-			//SettingsBtn.Background.BeginAnimation(SolidColorBrush.ColorProperty, animation);
 		}
 
 		private void ViewModel_URLWarning(object sender, EventArgs e)

@@ -5,9 +5,14 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:VideoBuddy.Views"
 	  xmlns:controls="clr-namespace:VideoBuddy.Controls"
+	  xmlns:util="clr-namespace:VideoBuddy.Utility.Converters"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
 	  Background="#555555">
+
+	<UserControl.Resources>
+		<util:InverseBooleanConverter x:Key="InverseBoolConverter" />
+	</UserControl.Resources>
 
     <Grid>
 		<Grid.ColumnDefinitions>
@@ -62,10 +67,10 @@
 			<StackPanel Orientation="Horizontal"
 						HorizontalAlignment="Center" >
 				<ProgressBar x:Name="ProgBar"
-						 Value="{Binding ConvertPct}"
-						 Height="30"
-						 Width="400"
-						 Margin="0,10,0,10" />
+							 Value="{Binding ConvertPct}"
+							 Height="30"
+							 Width="400"
+							 Margin="0,10,0,10" />
 				<Button x:Name="CancelBtn"
 						Command="{Binding CancelCommand}"
 						IsEnabled="{Binding ConvertInProgress}"
@@ -82,7 +87,7 @@
 						Margin="10,0,0,0" />
 			</StackPanel>
 		</StackPanel>
-		<StackPanel x:Name="DebugPanel"
+		<!--<StackPanel x:Name="DebugPanel"
 					Grid.Column="0"
 					Grid.Row="2" >
 			<TextBlock Text="Converted so far:" />
@@ -91,6 +96,99 @@
 			<TextBlock Text="{Binding DebugSize}" />
 			<TextBlock Text="Percentage:" />
 			<TextBlock Text="{Binding DebugPct}" />
+		</StackPanel>-->
+		<StackPanel x:Name="QueuePanel"
+					Grid.Column="0"
+					Grid.Row="2"
+					Margin="5">
+			<TextBlock Text="File to Add to Queue:"
+					   Foreground="White" />
+			<controls:VBSelectTextBox x:Name="QueueTextBox"
+									  Text="{Binding NewQueueItem}"
+									  Height="25"/>
+			<Button Content="Add to Queue!"
+					Style="{StaticResource BrowseButtons}"
+					Command="{Binding AddToQueueCommand}"
+					Foreground="White"
+					HorizontalAlignment="Center"
+					HorizontalContentAlignment="Center"
+					VerticalContentAlignment="Center"
+					Height="25"
+					Width="80"
+					Margin="10"/>
+			<Grid Margin="10,0,10,10"
+				  Height="30">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="1*" />
+					<ColumnDefinition Width="1*" />
+					<ColumnDefinition Width="1*" />
+				</Grid.ColumnDefinitions>
+				<Button Content="Start Queue"
+						Style="{StaticResource BrowseButtons}"
+						Command="{Binding StartQueueCommand}"
+						IsEnabled="{Binding QueueBusy, Converter={StaticResource InverseBoolConverter}}"
+						Foreground="White"
+						HorizontalContentAlignment="Center"
+						VerticalContentAlignment="Center"
+						Grid.Column="0" />
+				<Button Content="Stop Queue"
+						Style="{StaticResource BrowseButtons}"
+						Command="{Binding StopQueueCommand}"
+						IsEnabled="{Binding QueueBusy}"
+						Foreground="White"
+						HorizontalContentAlignment="Center"
+						VerticalContentAlignment="Center"
+						Grid.Column="2" />
+			</Grid>
+			<ProgressBar Value="{Binding QueuePct}"
+						 Height="20"/>
+			<TextBlock Text="Now Converting: Super Cool video title 1 part 4.flv"
+					   Foreground="White"
+					   TextWrapping="NoWrap"
+					   TextTrimming="WordEllipsis"
+					   HorizontalAlignment="Center" />
 		</StackPanel>
+		<ListView x:Name="QueueList"
+				  ItemsSource="{Binding ConvertQueue}"
+				  Background="#444444"
+				  BorderThickness="0"
+				  Grid.Column="1"
+				  Grid.ColumnSpan="2"
+				  Grid.Row="2">
+			<ListView.ItemContainerStyle>
+				<Style TargetType="ListViewItem">
+					<Setter Property="HorizontalContentAlignment" Value="Stretch" />
+					<Setter Property="Focusable" Value="False" />
+				</Style>
+			</ListView.ItemContainerStyle>
+			<ListView.ItemTemplate>
+				<DataTemplate>
+					<Grid Background="Transparent"
+						  Height="40">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="5*" />
+							<ColumnDefinition Width="1*" />
+						</Grid.ColumnDefinitions>
+						<TextBlock Text="{Binding FileName}" 
+								   FontSize="20"
+								   Foreground="White"
+								   VerticalAlignment="Center"
+								   Margin="10,0,0,0"
+								   Grid.Column="0" />
+						<Button Content="X"
+								Style="{StaticResource BrowseButtons}"
+								FontSize="20"
+								Foreground="White"
+								BorderBrush="White"
+								HorizontalAlignment="Center"
+								HorizontalContentAlignment="Center"
+								VerticalContentAlignment="Center"
+								Height="35"
+								Width="70"
+								Grid.Column="1" />
+					</Grid>
+				</DataTemplate>
+			</ListView.ItemTemplate>
+		</ListView>
 	</Grid>
 </UserControl>

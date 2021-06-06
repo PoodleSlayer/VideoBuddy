@@ -14,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using VideoBuddy.IoC;
+using VideoBuddy.Utility.Messages;
+using VideoBuddy.ViewModel;
 using VideoBuddy.Views;
 using Autofac;
 using GalaSoft.MvvmLight.Messaging;
@@ -36,6 +38,7 @@ namespace VideoBuddy
 
 			//MainFrame.Navigate(AppContainer.Container.Resolve<MainPage>());
 			MainDisplay.Content = AppContainer.Container.Resolve<DownloadPage>();
+			DataContext = new MainViewModel();
 			DownloadBtn.IsEnabled = false;
 
 			DownloadBtn.Click += DownloadBtn_Click;
@@ -45,12 +48,12 @@ namespace VideoBuddy
 
 			Closing += MainWindow_Closing;
 
-			Messenger.Default.Register<NotificationMessage>(this, ReceiveMessage);
+			Messenger.Default.Register<ButtonWarningMessage>(this, ReceiveMessage);
 		}
 
 		private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			Messenger.Default.Unregister<NotificationMessage>(this, ReceiveMessage);
+			Messenger.Default.Unregister<ButtonWarningMessage>(this, ReceiveMessage);
 		}
 
 		private void SettingsBtn_Click(object sender, RoutedEventArgs e)
@@ -81,21 +84,28 @@ namespace VideoBuddy
 			DownloadBtn.IsEnabled = false;
 		}
 
-		private void ViewModel_SettingsWarning(object sender, EventArgs e)
+		private void HighlightButtonWarning(Button button, string colorString)
 		{
-			// highlight the Settings button so the user knows what to fill out
 			ColorAnimation animation;
+			Storyboard sb = new Storyboard();
+			sb.Duration = new Duration(TimeSpan.FromSeconds(1));
 			animation = new ColorAnimation();
-			animation.From = Colors.Green;
-			animation.To = (Color)ColorConverter.ConvertFromString("#239CFF");
+			animation.From = Colors.Red;
+			animation.To = (Color)ColorConverter.ConvertFromString(colorString);
+			animation.FillBehavior = FillBehavior.Stop;
 			animation.Duration = new Duration(TimeSpan.FromSeconds(1));
-			SettingsBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#239CFF"));
-			SettingsBtn.Background.BeginAnimation(SolidColorBrush.ColorProperty, animation);
+			sb.Children.Add(animation);
+			Storyboard.SetTarget(animation, button);
+			Storyboard.SetTargetProperty(animation, new PropertyPath("Background.Color"));
+			sb.Begin();
 		}
 
-		private async void ReceiveMessage(NotificationMessage msg)
+		private async void ReceiveMessage(ButtonWarningMessage msg)
 		{
-
+			if (msg.ButtonToHighlight == "Settings")
+			{
+				HighlightButtonWarning(SettingsBtn, "#239CFF");
+			}
 		}
 
 		public void NavigateTo(string newPage)
@@ -103,6 +113,9 @@ namespace VideoBuddy
 
 		}
 
-		
+		private MainViewModel ViewModel
+		{
+			get => DataContext as MainViewModel;
+		}
 	}
 }

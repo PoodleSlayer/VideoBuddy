@@ -83,11 +83,15 @@
     <Compile Include="Controls\VBSelectTextBox.cs" />
     <Compile Include="IoC\AppContainer.cs" />
     <Compile Include="IoC\IFileService.cs" />
+    <Compile Include="Models\ConvertModel.cs" />
     <Compile Include="Models\SettingsModel.cs" />
+    <Compile Include="Utility\Converters\InverseBooleanConverter.cs" />
     <Compile Include="Utility\FileService.cs" />
+    <Compile Include="Utility\Messages\ButtonWarningMessage.cs" />
     <Compile Include="Utility\ProcessRunner.cs" />
     <Compile Include="ViewModel\ConvertViewModel.cs" />
     <Compile Include="ViewModel\DownloadViewModel.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\VBViewModel.cs" />
     <Compile Include="Views\ConvertPage.xaml.cs">
